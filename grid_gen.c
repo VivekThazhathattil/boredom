@@ -18,13 +18,15 @@ winsize_t get_win_size(){
 }
 
 void place_blocks(char* c, bin_mat_t* bm){
-  system("clear");
+  //system("clear");
   for(int i = 0; i < bm->rows; ++i){
     //char* random_color = get_random_color();
     for(int j = 0; j < bm->cols; ++j){
-      if(!bm->mat[i][j])
-        printf(" ");
+      if(!bm->mat[i][j]){
+        //printf(" ");
+      }
       else{
+        gotoxy(j, i);
         char* spec_color = get_specific_color(bm->mat[i][j]);
         printf("%s%s", spec_color, c);
         //printf("%s", c);
@@ -154,10 +156,11 @@ int main(void){
   
   init_curr_state_plants(curr_state);
 
+  system("clear");
   for(int i = 0; i < 1000; ++i){
     place_blocks(blk_sym, curr_state);
     printf("\n");
-    //usleep(frame_update_delay);
+    usleep(frame_update_delay);
     update_state_plants(curr_state);
   }
 
