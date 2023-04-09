@@ -102,7 +102,7 @@ void update_state_plants(bin_mat_t* bm){
   for(int i = 0 ; i < bm->rows; ++i){
     for(int j = 0; j < bm->cols; ++j){
       uint8_t elm = bm->mat[i][j];
-      if(elm && !marked_trees[elm-1]){
+      if(elm && marked_trees[elm-1] < NUM_BRANCHES){
         //the tree can only grow in 3 dirs (L, R, U)
         while(1){
           if(!can_grow(bm, i, j))
@@ -113,21 +113,21 @@ void update_state_plants(bin_mat_t* bm){
             case L:
               if(j > 0 && !bm->mat[i][j-1]){
                 bm->mat[i][j-1] = elm;
-                marked_trees[elm-1] = 1; 
+                ++marked_trees[elm-1]; 
                 flag = 1;
               }
               break;
             case R:
               if(j < bm->cols-1 && !bm->mat[i][j+1]){
                 bm->mat[i][j+1] = elm;
-                marked_trees[elm-1] = 1;
+                ++marked_trees[elm-1];
                 flag = 1;
               }
               break;
             case U:
               if(i > 0 && !bm->mat[i-1][j]){
                 bm->mat[i-1][j] = elm;
-                marked_trees[elm-1] = 1;
+                ++marked_trees[elm-1];
                 flag = 1;
               }
               break;
@@ -160,7 +160,7 @@ int main(void){
   for(int i = 0; i < 1000; ++i){
     place_blocks(blk_sym, curr_state);
     printf("\n");
-    usleep(frame_update_delay);
+    //usleep(frame_update_delay);
     update_state_plants(curr_state);
   }
 
